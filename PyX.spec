@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           PyX
-Version:        0.8.1
-Release:        4%{?dist}
+Version:        0.9
+Release:        1%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -34,7 +34,7 @@ built out of these primitives.
 
 
 %build
-%{__sed} -i 's?^build_t1strip=.*?build_t1strip=1?' setup.cfg
+%{__sed} -i 's?^build_t1code=.*?build_t1code=1?' setup.cfg
 # Bug #150085 excludes x86_64 - don't enable pykpathsea C module for x86_64
 %ifnarch x86_64
 %{__sed} -i 's?^build_pykpathsea=.*?build_pykpathsea=1?' setup.cfg
@@ -95,14 +95,23 @@ rm -rf %{buildroot}
 %ifnarch x86_64
 %{python_sitearch}/pyx/pykpathsea/*.so
 %endif
-%dir %{python_sitearch}/pyx/t1strip
-%{python_sitearch}/pyx/t1strip/*.py
-%{python_sitearch}/pyx/t1strip/*.pyc
-%ghost %{python_sitearch}/pyx/t1strip/*.pyo
-%{python_sitearch}/pyx/t1strip/*.so
+### t1strip stuff moved to font in 0.9
+#%%dir %{python_sitearch}/pyx/t1strip
+#%%{python_sitearch}/pyx/t1strip/*.py
+#%%{python_sitearch}/pyx/t1strip/*.pyc
+#%%ghost %{python_sitearch}/pyx/t1strip/*.pyo
+#%%{python_sitearch}/pyx/t1strip/*.so
+%dir %{python_sitearch}/pyx/font
+%{python_sitearch}/pyx/font/*.py
+%{python_sitearch}/pyx/font/*.pyc
+%ghost %{python_sitearch}/pyx/font/*.pyo
+%{python_sitearch}/pyx/font/*.so
 
 
 %changelog
+* Sat Jun 03 2006 Michael A. Peters <mpeters@mac.com> - 0.9-1
+- New upstream release (closes bug #193956)
+
 * Sun Apr 30 2006 Michael A. Peters <mpeters@mac.com> - 0.8.1-4
 - Fixed rpmlint errors noted in 190247#3
 - Don't build pykpathsea C module for x86_64 (Bug #150085)
