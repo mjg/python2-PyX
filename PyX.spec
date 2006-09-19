@@ -2,7 +2,7 @@
 
 Name:           PyX
 Version:        0.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -19,7 +19,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel >= 2.2
 BuildRequires:  tetex-latex
-Requires:   python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 Requires:   tetex
 
 %description
@@ -78,20 +77,16 @@ rm -rf %{buildroot}
 %{_datadir}/pyx/
 %dir %{python_sitearch}/pyx
 %{python_sitearch}/pyx/*.py
-%{python_sitearch}/pyx/*.pyc
-%ghost %{python_sitearch}/pyx/*.pyo
+%{python_sitearch}/pyx/*.py[co]
 %dir %{python_sitearch}/pyx/graph
 %{python_sitearch}/pyx/graph/*.py
-%{python_sitearch}/pyx/graph/*.pyc
-%ghost %{python_sitearch}/pyx/graph/*.pyo
+%{python_sitearch}/pyx/graph/*.py[co]
 %dir %{python_sitearch}/pyx/graph/axis
 %{python_sitearch}/pyx/graph/axis/*.py
-%{python_sitearch}/pyx/graph/axis/*.pyc
-%ghost %{python_sitearch}/pyx/graph/axis/*.pyo
+%{python_sitearch}/pyx/graph/axis/*.py[co]
 %dir %{python_sitearch}/pyx/pykpathsea
 %{python_sitearch}/pyx/pykpathsea/*.py
-%{python_sitearch}/pyx/pykpathsea/*.pyc
-%ghost %{python_sitearch}/pyx/pykpathsea/*.pyo
+%{python_sitearch}/pyx/pykpathsea/*.py[co]
 %ifnarch x86_64
 %{python_sitearch}/pyx/pykpathsea/*.so
 %endif
@@ -103,12 +98,15 @@ rm -rf %{buildroot}
 #%%{python_sitearch}/pyx/t1strip/*.so
 %dir %{python_sitearch}/pyx/font
 %{python_sitearch}/pyx/font/*.py
-%{python_sitearch}/pyx/font/*.pyc
-%ghost %{python_sitearch}/pyx/font/*.pyo
+%{python_sitearch}/pyx/font/*.py[co]
 %{python_sitearch}/pyx/font/*.so
 
 
 %changelog
+* Wed Sep 20 2006 José Matos <jamatos[AT]fc.up.pt> - 0.9-2
+- Rebuild for FC-6.
+- Unghost .pyo files.
+
 * Sat Jun 03 2006 Michael A. Peters <mpeters@mac.com> - 0.9-1
 - New upstream release (closes bug #193956)
 
