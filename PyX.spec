@@ -2,7 +2,7 @@
 
 Name:           PyX
 Version:        0.9
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -103,6 +103,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Oct 05 2006 Christian Iseli <Christian.Iseli@licr.org> 0.9-3
+ - rebuilt for unwind info generation, broken in gcc-4.1.1-21
+
 * Wed Sep 20 2006 José Matos <jamatos[AT]fc.up.pt> - 0.9-2
 - Rebuild for FC-6.
 - Unghost .pyo files.
