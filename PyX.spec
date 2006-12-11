@@ -2,7 +2,7 @@
 
 Name:           PyX
 Version:        0.9
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -17,9 +17,9 @@ Source1:	%{name}-%{version}-manual.pdf
 Patch0:         PyX-0.8.1-siteconfig.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel >= 2.2
+BuildRequires:  python-devel
 BuildRequires:  tetex-latex
-Requires:   tetex
+Requires:       tetex
 
 %description
 PyX is a Python package for the creation of PostScript and PDF files. It
@@ -103,6 +103,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Dec 11 2006 José Matos <jamatos[AT]fc.up.pt> - 0.9-4
+- Rebuild for python 2.5.
+
 * Thu Oct 05 2006 Christian Iseli <Christian.Iseli@licr.org> 0.9-3
  - rebuilt for unwind info generation, broken in gcc-4.1.1-21
 
