@@ -2,13 +2,13 @@
 
 Name:           PyX
 Version:        0.9
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
-License:        GPL
+License:        GPLv2+
 URL:            http://pyx.sourceforge.net/
-Source0:        http://easynews.dl.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
+Source0:        http://download.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
 # Fedora doesn't seem to ship with the python mkhowto script needed to generate
 # the manual at build time. The manual here is from:
 # http://pyx.sourceforge.net/manual.pdf
@@ -103,6 +103,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Aug 28 2007 José Matos <jamatos[AT]fc.up.pt> - 0.9-5
+- License fix, rebuild for devel (F8).
+
 * Mon Dec 11 2006 José Matos <jamatos[AT]fc.up.pt> - 0.9-4
 - Rebuild for python 2.5.
 
