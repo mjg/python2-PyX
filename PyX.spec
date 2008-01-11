@@ -1,3 +1,4 @@
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 # Necessary as soon as mkhowto is used
@@ -7,7 +8,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -80,8 +81,15 @@ rm -rf %{buildroot}
 %{_datadir}/pyx/
 %{python_sitearch}/pyx/
 
+%if 0%{?fedora} >= 9
+%{python_sitelib}/*.egg-info
+%endif
+
 
 %changelog
+* Fri Jan 11 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-2
+- Add egg-info to F9+.
+
 * Fri Jan 11 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-1
 - New upstream release (#426816).
 - Package cleanup.
