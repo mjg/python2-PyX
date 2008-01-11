@@ -1,24 +1,32 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
+# Necessary as soon as mkhowto is used
+# at the moment that is not possible (#220693)
+#%define pybasever %(%{__python} -c "from sys import version_info; print '%d.%d' % version_info[:2]")
+#%define doc_tools_dir %{_libdir}/python%{pybasever}/Doc/tools
+
 Name:           PyX
-Version:        0.9
-Release:        5%{?dist}
+Version:        0.10
+Release:        1%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
 License:        GPLv2+
 URL:            http://pyx.sourceforge.net/
-Source0:        http://download.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
-# Fedora doesn't seem to ship with the python mkhowto script needed to generate
-# the manual at build time. The manual here is from:
-# http://pyx.sourceforge.net/manual.pdf
-Source1:	%{name}-%{version}-manual.pdf
+Source0:        http://downloads.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
+Source1:        %{name}-%{version}-manual.pdf
+
 # Fix the install root in the siteconfig.py
 Patch0:         PyX-0.8.1-siteconfig.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel
+BuildRequires:  kpathsea-devel
 BuildRequires:  tetex-latex
+# for mkhowto
+#BuildRequires:  python-tools
+
 Requires:       tetex
 
 %description
@@ -33,26 +41,21 @@ built out of these primitives.
 
 
 %build
-%{__sed} -i 's?^build_t1code=.*?build_t1code=1?' setup.cfg
-# Bug #150085 excludes x86_64 - don't enable pykpathsea C module for x86_64
-%ifnarch x86_64
-%{__sed} -i 's?^build_pykpathsea=.*?build_pykpathsea=1?' setup.cfg
-%endif
+%{__sed} -i 's|^build_t1code=.*|build_t1code=1|' setup.cfg
+%{__sed} -i 's|^build_pykpathsea=.*|build_pykpathsea=1|' setup.cfg
 
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 # turn on ipc in config file
-%{__sed} -i 's?^texipc =.*?texipc = 1?' pyxrc
+%{__sed} -i 's|^texipc =.*|texipc = 1|' pyxrc
 
 pushd faq
 make
 popd
 
 pushd manual
-## Nope - fedora doesn't ship with mkhowto
-## Bug #177349
-# ln -s /path/to/python/mkhowto .
-# make
+#ln -s %{doc_tools_dir}/mkhowto .
+#make
 cp %{SOURCE1} ./manual.pdf
 popd
 
@@ -62,9 +65,9 @@ rm -rf %{buildroot}
 
 # Fix the non-exec with shellbang rpmlint errors
 for file in `find %{buildroot}%{python_sitearch}/pyx -type f -name "*.py"`; do
-  [ ! -x ${file} ] && %{__sed} -i 's?^#!?##?' ${file}
+  [ ! -x ${file} ] && %{__sed} -i 's|^#!|##|' ${file}
 done
- 
+
 %clean
 rm -rf %{buildroot}
 
@@ -75,34 +78,14 @@ rm -rf %{buildroot}
 %doc contrib/ examples/
 %config(noreplace) %{_sysconfdir}/pyxrc
 %{_datadir}/pyx/
-%dir %{python_sitearch}/pyx
-%{python_sitearch}/pyx/*.py
-%{python_sitearch}/pyx/*.py[co]
-%dir %{python_sitearch}/pyx/graph
-%{python_sitearch}/pyx/graph/*.py
-%{python_sitearch}/pyx/graph/*.py[co]
-%dir %{python_sitearch}/pyx/graph/axis
-%{python_sitearch}/pyx/graph/axis/*.py
-%{python_sitearch}/pyx/graph/axis/*.py[co]
-%dir %{python_sitearch}/pyx/pykpathsea
-%{python_sitearch}/pyx/pykpathsea/*.py
-%{python_sitearch}/pyx/pykpathsea/*.py[co]
-%ifnarch x86_64
-%{python_sitearch}/pyx/pykpathsea/*.so
-%endif
-### t1strip stuff moved to font in 0.9
-#%%dir %{python_sitearch}/pyx/t1strip
-#%%{python_sitearch}/pyx/t1strip/*.py
-#%%{python_sitearch}/pyx/t1strip/*.pyc
-#%%ghost %{python_sitearch}/pyx/t1strip/*.pyo
-#%%{python_sitearch}/pyx/t1strip/*.so
-%dir %{python_sitearch}/pyx/font
-%{python_sitearch}/pyx/font/*.py
-%{python_sitearch}/pyx/font/*.py[co]
-%{python_sitearch}/pyx/font/*.so
+%{python_sitearch}/pyx/
 
 
 %changelog
+* Fri Jan 11 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-1
+- New upstream release (#426816).
+- Package cleanup.
+
 * Tue Aug 28 2007 José Matos <jamatos[AT]fc.up.pt> - 0.9-5
 - License fix, rebuild for devel (F8).
 
