@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Feb 14 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-4
+- Rebuild for gcc 4.3
+
 * Sat Jan 12 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-3
 - egg-info is in sitearch...
 
