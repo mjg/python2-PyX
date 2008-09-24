@@ -1,7 +1,7 @@
-diff -ur PyX-0.8.1/setup.py PyX-0.8.1-patched/setup.py
---- PyX-0.8.1/setup.py	2005-08-13 05:32:46.000000000 -0700
-+++ PyX-0.8.1-patched/setup.py	2006-04-29 02:49:37.000000000 -0700
-@@ -15,8 +15,6 @@
+diff -up PyX-0.10/setup.py.orig PyX-0.10/setup.py
+--- PyX-0.10/setup.py.orig	2006-05-24 09:33:56.000000000 -0400
++++ PyX-0.10/setup.py	2008-09-24 14:22:47.000000000 -0400
+@@ -15,8 +15,6 @@ except:
      log = None
  from distutils.core import setup, Extension
  from distutils.util import change_root, convert_path
@@ -10,7 +10,7 @@ diff -ur PyX-0.8.1/setup.py PyX-0.8.1-patched/setup.py
  from distutils.command.install_lib import install_lib
  import ConfigParser
  import sys, os
-@@ -81,79 +79,21 @@
+@@ -81,79 +79,21 @@ adddatafiles("pyxrcdir", os.name != "nt"
  # extend install commands to overwrite siteconfig.py during build and install
  #
  
@@ -98,8 +98,8 @@ diff -ur PyX-0.8.1/setup.py PyX-0.8.1-patched/setup.py
          return result
  
  ################################################################################
-@@ -193,7 +133,5 @@
-       packages=["pyx", "pyx/graph", "pyx/graph/axis", "pyx/t1strip", "pyx/pykpathsea"],
+@@ -193,7 +133,5 @@ setup(name="PyX",
+       packages=["pyx", "pyx/graph", "pyx/graph/axis", "pyx/font", "pyx/pykpathsea"],
        ext_modules=ext_modules,
        data_files=data_files,
 -      cmdclass = {"build_py": pyx_build_py,
