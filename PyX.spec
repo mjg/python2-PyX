@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.10-5
+- Rebuild for Python 2.6
+
 * Thu Feb 14 2008 José Matos <jamatos[AT]fc.up.pt> - 0.10-4
 - Rebuild for gcc 4.3
 
