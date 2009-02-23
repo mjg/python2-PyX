@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Sat Nov 29 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.10-5
 - Rebuild for Python 2.6
 
