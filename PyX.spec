@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -49,9 +49,10 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 # turn on ipc in config file
 %{__sed} -i 's|^texipc =.*|texipc = 1|' pyxrc
 
-pushd faq
-make
-popd
+# disable for now
+# pushd faq
+# make
+# popd
 
 pushd manual
 #ln -s %{doc_tools_dir}/mkhowto .
@@ -74,7 +75,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS CHANGES LICENSE PKG-INFO README faq/pyxfaq.pdf manual/manual.pdf
+%doc AUTHORS CHANGES LICENSE PKG-INFO README manual/manual.pdf
 %doc contrib/ examples/
 %config(noreplace) %{_sysconfdir}/pyxrc
 %{_datadir}/pyx/
@@ -86,6 +87,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jul 30 2009 José Matos <jamatos@fc.up.pt> - 0.10-8
+- Disable faq pdf generation for now (it breaks the build)
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
