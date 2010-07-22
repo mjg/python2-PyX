@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -87,6 +87,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 0.10-9
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Thu Jul 30 2009 José Matos <jamatos@fc.up.pt> - 0.10-8
 - Disable faq pdf generation for now (it breaks the build)
 
