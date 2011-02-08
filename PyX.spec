@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -87,6 +87,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 0.10-9
 - Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
 
