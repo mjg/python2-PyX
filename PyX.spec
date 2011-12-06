@@ -7,7 +7,7 @@
 
 Name:           PyX
 Version:        0.10
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -26,8 +26,6 @@ BuildRequires:  kpathsea-devel
 BuildRequires:  tetex-latex
 # for mkhowto
 #BuildRequires:  python-tools
-
-Requires:       tetex
 
 %description
 PyX is a Python package for the creation of PostScript and PDF files. It
@@ -87,6 +85,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Dec 05 2011 Michael J Gruber <mjg@fedoraproject.org> - 0.10-11
+- Remove tetex dependency (bug #760524)
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
