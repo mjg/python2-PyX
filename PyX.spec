@@ -1,33 +1,23 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-# Necessary as soon as mkhowto is used
-# at the moment that is not possible (#220693)
-#%define pybasever %(%{__python} -c "from sys import version_info; print '%d.%d' % version_info[:2]")
-#%define doc_tools_dir %{_libdir}/python%{pybasever}/Doc/tools
-
 Name:           PyX
-Version:        0.10
-Release:        10%{?dist}
+Version:        0.11.1
+Release:        1%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
 License:        GPLv2+
 URL:            http://pyx.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
-Source1:        %{name}-%{version}-manual.pdf
-
-# Fix the install root in the siteconfig.py
-Patch0:         PyX-0.8.1-siteconfig.patch
+Source1:        http://pyx.sourceforge.net/manual.pdf
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel
 BuildRequires:  kpathsea-devel
-BuildRequires:  tetex-latex
-# for mkhowto
-#BuildRequires:  python-tools
+BuildRequires:  tex(latex)
 
-Requires:       tetex
+Requires:       tex(latex)
 
 %description
 PyX is a Python package for the creation of PostScript and PDF files. It
@@ -37,7 +27,6 @@ built out of these primitives.
 
 %prep
 %setup -q
-%patch0 -p1
 
 
 %build
@@ -47,7 +36,7 @@ built out of these primitives.
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 # turn on ipc in config file
-%{__sed} -i 's|^texipc =.*|texipc = 1|' pyxrc
+%{__sed} -i 's|^texipc =.*|texipc = 1|' pyx/data/pyxrc
 
 # disable for now
 # pushd faq
@@ -55,7 +44,7 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 # popd
 
 pushd manual
-#ln -s %{doc_tools_dir}/mkhowto .
+#ln -s <doc_tools_dir>/mkhowto .
 #make
 cp %{SOURCE1} ./manual.pdf
 popd
@@ -63,6 +52,9 @@ popd
 %install
 rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
+
+%{__mkdir} %{buildroot}%{_sysconfdir}
+%{__cp} -a pyx/data/pyxrc %{buildroot}%{_sysconfdir}/pyxrc
 
 # Fix the non-exec with shellbang rpmlint errors
 for file in `find %{buildroot}%{python_sitearch}/pyx -type f -name "*.py"`; do
@@ -78,15 +70,15 @@ rm -rf %{buildroot}
 %doc AUTHORS CHANGES LICENSE PKG-INFO README manual/manual.pdf
 %doc contrib/ examples/
 %config(noreplace) %{_sysconfdir}/pyxrc
-%{_datadir}/pyx/
+%{python_sitearch}/%{name}*egg-info
 %{python_sitearch}/pyx/
-
-%if 0%{?fedora} >= 9
-%{python_sitearch}/*.egg-info
-%endif
 
 
 %changelog
+* Mon Jun 20 2011 José Matos <jamatos@fedoraproject.org> - 0.11.1-1
+- New upstream release
+- Clean spec file
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
