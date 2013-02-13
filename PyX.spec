@@ -2,7 +2,7 @@
 
 Name:           PyX
 Version:        0.11.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.11.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Sun Oct 07 2012 Jindrich Novy <jnovy@redhat.com> 0.11.1-4
 - rebuild against new kpathsea in TeX Live 2012
 
