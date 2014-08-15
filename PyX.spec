@@ -2,7 +2,7 @@
 
 Name:           PyX
 Version:        0.11.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Aug 15 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.11.1-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Fri Jun 06 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.11.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
