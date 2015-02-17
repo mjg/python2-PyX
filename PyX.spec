@@ -19,6 +19,7 @@ BuildRequires:  kpathsea-devel
 BuildRequires:  tex(latex)
 
 Requires:       tex(latex)
+Provides:	python2-pyx
 
 %description
 PyX is a Python package for the creation of PostScript and PDF files. It
@@ -80,6 +81,7 @@ rm -rf %{buildroot}
 * Tue Feb 17 2015 José Matos <jamatos@fedoraproject.org> - 0.12.1-1
 - update to 0.12.1
 - add the PyX FAQ to the documentation
+- Provides python2-pyx since this is the latest version to support python2
 
 * Fri Aug 15 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.11.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
