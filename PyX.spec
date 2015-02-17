@@ -10,6 +10,7 @@ License:        GPLv2+
 URL:            http://pyx.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
 Source1:        http://pyx.sourceforge.net/manual.pdf
+Source2:	http://pyx.sourceforge.net/pyxfaq.pdf
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -47,6 +48,7 @@ pushd manual
 #ln -s <doc_tools_dir>/mkhowto .
 #make
 cp %{SOURCE1} ./manual.pdf
+cp %{SOURCE2} ./pyxfaq.pdf
 popd
 
 %install
@@ -67,7 +69,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS CHANGES LICENSE PKG-INFO README manual/manual.pdf
+%doc AUTHORS CHANGES LICENSE PKG-INFO README manual
 %doc contrib/ examples/
 %config(noreplace) %{_sysconfdir}/pyxrc
 %{python_sitearch}/%{name}*egg-info
@@ -77,6 +79,7 @@ rm -rf %{buildroot}
 %changelog
 * Tue Feb 17 2015 José Matos <jamatos@fedoraproject.org> - 0.12.1-1
 - update to 0.12.1
+- add the PyX FAQ to the documentation
 
 * Fri Aug 15 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.11.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
