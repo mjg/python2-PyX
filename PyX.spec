@@ -10,9 +10,7 @@ Source0:        http://downloads.sourceforge.net/sourceforge/pyx/PyX-%{version}.
 Patch0:		PyX-remove-monkey-patching.patch
 BuildRequires:  python3-devel
 BuildRequires:  kpathsea-devel
-BuildRequires:  texlive-latex
-BuildRequires:  tex(latex)
-BuildRequires:  tex(titlesec.sty)
+BuildRequires:  texlive-collection-latexextra
 BuildRequires:  ghostscript-core
 BuildRequires:  python3-sphinx
 
