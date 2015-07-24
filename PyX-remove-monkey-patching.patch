@@ -1,0 +1,34 @@
+Revision: 3660
+          https://sourceforge.net/p/pyx/code/3660/
+Author:   wobsta
+Date:     2015-06-06 21:24:13 +0000 (Sat, 06 Jun 2015)
+Log Message:
+-----------
+monkey patching object_description is useless and not necessary for Sphinx 1.3+; it was ported from a safe_repr monkey patch without noticing that its not needed anymore, as Sphinx does strip the description itself already (thanks to Dmitry Shachnev for the report)
+
+Modified Paths:
+--------------
+    trunk/pyx/manual/conf.py
+
+Modified: trunk/pyx/manual/conf.py
+===================================================================
+--- trunk/pyx/manual/conf.py	2015-06-06 21:14:54 UTC (rev 3659)
++++ trunk/pyx/manual/conf.py	2015-06-06 21:24:13 UTC (rev 3660)
+@@ -280,14 +280,3 @@
+ def setup(app):
+     app.connect('autodoc-process-signature', unprocessed_function_signature)
+     app.connect('autodoc-process-docstring', remove_default_constructor_docstring)
+-
+-
+-# -- monkey patch object_description for function signatures -------------------
+-
+-import re
+-import sphinx.util.inspect
+-
+-old_object_description = sphinx.util.inspect.object_description
+-function_pattern = re.compile(r"<function (\S+) at 0x[0-9a-f]+>")
+-sphinx.util.inspect.object_description = lambda obj: re.sub(function_pattern, r"\1",
+-                                                            old_object_description(obj))
+
+
+

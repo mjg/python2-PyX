@@ -1,25 +1,21 @@
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
 Name:           PyX
-Version:        0.12.1
-Release:        2%{?dist}
+Version:        0.14
+Release:        1%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
 License:        GPLv2+
 URL:            http://pyx.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/sourceforge/pyx/PyX-%{version}.tar.gz
-Source1:        http://pyx.sourceforge.net/manual.pdf
-Source2:	http://pyx.sourceforge.net/pyxfaq.pdf
-
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:  python-devel
+Patch0:		PyX-remove-monkey-patching.patch
+BuildRequires:  python3-devel
 BuildRequires:  kpathsea-devel
 BuildRequires:  tex(latex)
+BuildRequires:  ghostscript-core
+BuildRequires:  python3-sphinx
 
 Requires:       tex(latex)
-Provides:	python2-pyx
+Provides:	python3-pyx
 
 %description
 PyX is a Python package for the creation of PostScript and PDF files. It
@@ -27,57 +23,75 @@ combines an abstraction of the PostScript drawing model with a TeX/LaTeX
 interface. Complex tasks like 2d and 3d plots in publication-ready quality are
 built out of these primitives.
 
+%package doc
+Summary: Documentation for %{name}
+BuildArch: noarch
+
+%description doc
+%{Summary}
+
 %prep
 %setup -q
-
+%patch0 -p2 -b .conf
 
 %build
+# Set the extensions to be built
 %{__sed} -i 's|^build_t1code=.*|build_t1code=1|' setup.cfg
 %{__sed} -i 's|^build_pykpathsea=.*|build_pykpathsea=1|' setup.cfg
 
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 
 # turn on ipc in config file
 %{__sed} -i 's|^texipc =.*|texipc = 1|' pyx/data/pyxrc
 
-# disable for now
-# pushd faq
-# make
-# popd
+pushd faq
+%{__sed} -i 's|sphinx-build|sphinx-build-3|' Makefile
+make
+mv _build/html/ faq
+mv _build/latex/pyxfaq.pdf ..
+popd
 
 pushd manual
-#ln -s <doc_tools_dir>/mkhowto .
-#make
-cp %{SOURCE1} ./manual.pdf
-cp %{SOURCE2} ./pyxfaq.pdf
+%{__sed} -i 's|sphinx-build|sphinx-build-3|' Makefile
+make
+mv _build/html/ manual
+mv _build/latex/manual.pdf ..
 popd
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 %{__mkdir} %{buildroot}%{_sysconfdir}
 %{__cp} -a pyx/data/pyxrc %{buildroot}%{_sysconfdir}/pyxrc
 
 # Fix the non-exec with shellbang rpmlint errors
-for file in `find %{buildroot}%{python_sitearch}/pyx -type f -name "*.py"`; do
+for file in `find %{buildroot}%{python3_sitearch}/pyx -type f -name "*.py"`; do
   [ ! -x ${file} ] && %{__sed} -i 's|^#!|##|' ${file}
 done
 
-%clean
-rm -rf %{buildroot}
-
 
 %files
-%defattr(-,root,root,-)
-%doc AUTHORS CHANGES LICENSE PKG-INFO README manual
-%doc contrib/ examples/
+%license LICENSE
+%doc AUTHORS CHANGES PKG-INFO README
 %config(noreplace) %{_sysconfdir}/pyxrc
-%{python_sitearch}/%{name}*egg-info
-%{python_sitearch}/pyx/
+%{python3_sitearch}/%{name}*egg-info
+%{python3_sitearch}/pyx/
 
+%files doc
+%license LICENSE
+%doc *.pdf
+%doc faq/faq manual/manual
+%doc contrib/
+%doc examples/
 
 %changelog
+* Thu Jul 23 2015 José Matos <jamatos@fedoraproject.org> - 0.14-1
+- Update to 0.14
+- Since version 0.13 only supports python 3
+- Add -doc subpackage
+- Provides python3-pyx
+
 * Tue Jun 16 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.12.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
