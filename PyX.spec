@@ -11,6 +11,7 @@ Patch0:		PyX-remove-monkey-patching.patch
 BuildRequires:  python3-devel
 BuildRequires:  kpathsea-devel
 BuildRequires:  tex(latex)
+BuildRequires:  tex(titlesec.sty)
 BuildRequires:  ghostscript-core
 BuildRequires:  python3-sphinx
 
