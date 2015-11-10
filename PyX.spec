@@ -1,6 +1,6 @@
 Name:           PyX
 Version:        0.14
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -86,6 +86,9 @@ done
 %doc examples/
 
 %changelog
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.14-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
 * Thu Jul 23 2015 José Matos <jamatos@fedoraproject.org> - 0.14-1
 - Update to 0.14
 - Since version 0.13 only supports python 3
