@@ -1,8 +1,8 @@
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+%{!?python2_sitearch: %define python_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-Name:           PyX
+Name:           python2-PyX
 Version:        0.12.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python graphics package
 
 Group:          Applications/Publishing
@@ -27,18 +27,26 @@ combines an abstraction of the PostScript drawing model with a TeX/LaTeX
 interface. Complex tasks like 2d and 3d plots in publication-ready quality are
 built out of these primitives.
 
+This package contains the last version which is compatible with Python 2.
+It expects its configuration in py2pyxrc instead of pyxrc and can be installed
+in parallel with the PyX package for Python 3.
+
 %prep
-%setup -q
+%setup -q -n PyX-%{version}
 
 
 %build
 %{__sed} -i 's|^build_t1code=.*|build_t1code=1|' setup.cfg
 %{__sed} -i 's|^build_pykpathsea=.*|build_pykpathsea=1|' setup.cfg
+%{__sed} -i 's|pyxrc|py2pyxrc|' setup.py
+%{__sed} -i 's|pyxrc|py2pyxrc|' pyx/config.py
+%{__sed} -i 's|pyxrc|py2pyxrc|' pyx/data/pyxrc
+mv pyx/data/pyxrc pyx/data/py2pyxrc
 
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python2} setup.py build
 
 # turn on ipc in config file
-%{__sed} -i 's|^texipc =.*|texipc = 1|' pyx/data/pyxrc
+%{__sed} -i 's|^texipc =.*|texipc = 1|' pyx/data/py2pyxrc
 
 # disable for now
 # pushd faq
@@ -54,13 +62,13 @@ popd
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 %{__mkdir} %{buildroot}%{_sysconfdir}
-%{__cp} -a pyx/data/pyxrc %{buildroot}%{_sysconfdir}/pyxrc
+%{__cp} -a pyx/data/py2pyxrc %{buildroot}%{_sysconfdir}/py2pyxrc
 
 # Fix the non-exec with shellbang rpmlint errors
-for file in `find %{buildroot}%{python_sitearch}/pyx -type f -name "*.py"`; do
+for file in `find %{buildroot}%{python2_sitearch}/pyx -type f -name "*.py"`; do
   [ ! -x ${file} ] && %{__sed} -i 's|^#!|##|' ${file}
 done
 
@@ -72,12 +80,15 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS CHANGES LICENSE PKG-INFO README manual
 %doc contrib/ examples/
-%config(noreplace) %{_sysconfdir}/pyxrc
-%{python_sitearch}/%{name}*egg-info
-%{python_sitearch}/pyx/
+%config(noreplace) %{_sysconfdir}/py2pyxrc
+%{python2_sitearch}/PyX*egg-info
+%{python2_sitearch}/pyx/
 
 
 %changelog
+* Wed Dec 23 2015 Michael J Gruber <mjg@fedoraproject.org> - 0.12.1-2
+- compatibility package python2-PyX
+
 * Tue Feb 17 2015 José Matos <jamatos@fedoraproject.org> - 0.12.1-1
 - update to 0.12.1
 - add the PyX FAQ to the documentation
